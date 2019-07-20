@@ -4,11 +4,14 @@ import com.diamond.dbconnector.model.Email;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.util.Optional;
 
+@Component
 public class DbConnectorDAO {
+    public static final String RECORD_NOT_FOUND = "Record not found.";
     private JdbcTemplate jdbcTemplate;
 
     public DbConnectorDAO(DataSource dataSource) {
@@ -17,8 +20,14 @@ public class DbConnectorDAO {
 
     public String getEmail(int id) {
         String query = "select e.email from email e where e.id = ?";
-
-        return jdbcTemplate.queryForObject(query, String.class, id);
+        String result = RECORD_NOT_FOUND;
+        try {
+            result = jdbcTemplate.queryForObject(query, String.class, id);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return result;
+        }
+        return result;
     }
 
     public Email getEmailRow(int id) {
@@ -32,6 +41,6 @@ public class DbConnectorDAO {
         }
 
         return Optional.ofNullable(result)
-                .orElse(new Email().setResult("Record not found."));
+                .orElse(new Email().setResult(RECORD_NOT_FOUND));
     }
 }

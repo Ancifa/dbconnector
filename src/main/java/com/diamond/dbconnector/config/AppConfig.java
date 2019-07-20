@@ -1,6 +1,5 @@
 package com.diamond.dbconnector.config;
 
-import com.diamond.dbconnector.dao.DbConnectorDAO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -30,8 +29,4 @@ public class AppConfig {
         return dataSource;
     }
 
-    @Bean
-    public DbConnectorDAO dbConnectorDAO() {
-        return new DbConnectorDAO(dataSource());
-    }
 }
