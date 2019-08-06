@@ -1,9 +1,11 @@
 package com.diamond.dbconnector.controller;
 
 import com.diamond.dbconnector.dao.DbConnectorDAO;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class DbConnectorController {
@@ -32,5 +34,19 @@ public class DbConnectorController {
     @RequestMapping("/get-email-row")
     public String getEmailRow(@RequestParam(value = "param", defaultValue = "defaultValue") String param) {
         return connectorDAO.getEmailRow(Integer.parseInt(param)).toString();
+    }
+
+    @RequestMapping("/get-listing")
+    public String getListing(@RequestParam(value = "listingId") Long listingId) {
+        return connectorDAO.getListing(listingId);
+    }
+
+    @RequestMapping("/get-emails")
+    public ResponseEntity<List<String>> getEmailsList(@RequestBody List<Long> ids) {
+        List<String> emailsListByIds = connectorDAO.getEmailsListByIds(ids);
+
+        return emailsListByIds.isEmpty()
+                ? ResponseEntity.status(HttpStatus.CONFLICT).build()
+                : ResponseEntity.ok(emailsListByIds);
     }
 }

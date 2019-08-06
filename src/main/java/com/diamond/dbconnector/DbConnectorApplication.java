@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DbconnectorApplication {
+public class DbConnectorApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DbconnectorApplication.class, args);
+        SpringApplication.run(DbConnectorApplication.class, args);
     }
-
 }

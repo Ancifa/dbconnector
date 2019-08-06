@@ -1,5 +1,6 @@
 package com.diamond.dbconnector.config;
 
+import com.diamond.dbconnector.dao.DbConnectorDAO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,9 @@ public class AppConfig {
     @Value("${spring.datasource.url}")
     private String url;
 
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverClassName;
+
     @Value("${spring.datasource.username}")
     private String username;
 
@@ -21,7 +25,7 @@ public class AppConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
@@ -29,4 +33,8 @@ public class AppConfig {
         return dataSource;
     }
 
+    @Bean
+    public DbConnectorDAO dbConnectorDAO() {
+        return new DbConnectorDAO();
+    }
 }
